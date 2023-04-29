@@ -12,6 +12,17 @@
   justify-content: center;
   width: 100%;
   height: 100%;
+  color: white;
+  border-radius: 1rem;
+  font-size: x-large;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  /* From https://css.glass */
+  background: rgba(11, 2, 2, 0.11);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5.4px);
+  -webkit-backdrop-filter: blur(5.4px);
+  border: 1px solid rgba(255, 255, 255, 0.36);
 }
 
 .flex-item {
@@ -23,7 +34,13 @@
   justify-content: center;
 }
 
+.flex-item:hover {
+  background-color: rgb(99, 99, 99);
+  border-radius: 1rem;
+  color: black;
+}
+
 .border {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.36);
 }
 </style>
