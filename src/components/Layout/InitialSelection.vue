@@ -1,7 +1,7 @@
 <template>
-  <div class="v-sep">
-    <p class="flex-item border">New Room</p>
-    <p class="flex-item">Existing Room</p>
+  <div class="v-sep glass">
+    <p class="flex-item clr-change border">Create room</p>
+    <p class="flex-item rev-clr-change">Join room</p>
   </div>
 </template>
 
@@ -13,16 +13,10 @@
   width: 100%;
   height: 100%;
   color: white;
-  border-radius: 1rem;
+  border-radius: 2rem;
   font-size: x-large;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-
-  /* From https://css.glass */
-  background: rgba(11, 2, 2, 0.11);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5.4px);
-  -webkit-backdrop-filter: blur(5.4px);
-  border: 1px solid rgba(255, 255, 255, 0.36);
+  font-family: inherit;
+  -webkit-font-smoothing: antialiased;
 }
 
 .flex-item {
@@ -32,12 +26,21 @@
   display: flex;
   place-items: center;
   justify-content: center;
+  transition: background-color 0.4s forwards;
 }
 
-.flex-item:hover {
-  background-color: rgb(99, 99, 99);
-  border-radius: 1rem;
-  color: black;
+.clr-change:hover {
+  background-color: rgb(37, 2, 14);
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  cursor: pointer;
+}
+
+.rev-clr-change:hover {
+  background-color: rgb(37, 2, 14);
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  cursor: pointer;
 }
 
 .border {
