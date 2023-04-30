@@ -1,7 +1,11 @@
 <template>
-  <header>Base Button</header>
+  <button type="button">{{ buttonText }}</button>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    buttonText: String,
+  },
+};
 </script>

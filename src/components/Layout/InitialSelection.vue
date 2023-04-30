@@ -1,9 +1,23 @@
 <template>
-  <div class="v-sep glass">
-    <p class="flex-item clr-change border">Create room</p>
-    <p class="flex-item rev-clr-change">Join room</p>
+  <div class="v-sep">
+    <p @click="selectRoom('new')" class="flex-item clr-change border">
+      Create room
+    </p>
+    <p @click="selectRoom('existing')" class="flex-item rev-clr-change">
+      Join room
+    </p>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    selectRoom(option) {
+      this.$store.dispatch("setRoomOption", option);
+    },
+  },
+};
+</script>
 
 <style scoped>
 .v-sep {
