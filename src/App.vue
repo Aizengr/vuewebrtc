@@ -23,8 +23,8 @@ body {
   margin: 0px !important;
   padding: 0px !important;
   background: url(./assets/background.jpg);
-  /* background: linear-gradient(180deg, #a13358, #4b2c38, #000000, #2e0412); */
-  background-size: 100% 100%;
+  /* background: linear-gradient(180deg, #0e0d0d, #312d2f, #615c5c, #2e0412); */
+  background-size: 120% 120%;
   animation: gradient 30s ease infinite;
   height: 100vh;
   font-weight: 400;
