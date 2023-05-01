@@ -40,7 +40,7 @@ export default {
   display: flex;
   place-items: center;
   justify-content: center;
-  transition: background-color 0.4s forwards;
+  transition: all 1s forwards;
 }
 
 .clr-change:hover {
