@@ -2,16 +2,23 @@
   <form class="form-flex">
     <label for="username" class="form-flex-item">Username:</label>
     <input type="text" class="form-flex-item" />
-    <base-button class="form-flex-item" button-text="Create"></base-button>
+    <div class="form-flex-item button-flex">
+      <base-button button-text="Create"></base-button>
+      <base-button @click="optionReset" button-text="Cancel"></base-button>
+    </div>
   </form>
 </template>
 
 <script>
 import BaseButton from "../UI/BaseButton.vue";
+import { mapActions } from "vuex";
 
 export default {
   components: {
     BaseButton,
+  },
+  methods: {
+    ...mapActions(["optionReset"]),
   },
 };
 </script>
@@ -30,7 +37,7 @@ label {
 
 input {
   border-radius: 2rem;
-  width: 70%;
+  width: 60%;
   background-color: var(--main-btn-bg-color);
   color: white;
   text-align: center;
@@ -45,6 +52,12 @@ input:focus {
   height: 100%;
   flex-direction: column;
   place-items: center;
+  justify-content: space-evenly;
+}
+
+.button-flex {
+  width: 60%;
+  display: flex;
   justify-content: space-evenly;
 }
 </style>

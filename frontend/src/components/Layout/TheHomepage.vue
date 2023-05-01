@@ -3,8 +3,11 @@
     <base-card v-if="optionSelected === null" class="centered">
       <initial-selection></initial-selection>
     </base-card>
-    <base-card v-if="optionSelected === 'new'">
+    <base-card v-else-if="optionSelected === 'new'">
       <new-room></new-room>
+    </base-card>
+    <base-card v-else>
+      <existing-room></existing-room>
     </base-card>
   </div>
 </template>
@@ -14,6 +17,7 @@ import { mapGetters } from "vuex";
 import BaseCard from "../UI/BaseCard.vue";
 import InitialSelection from "./InitialSelection.vue";
 import NewRoom from "./NewRoom.vue";
+import ExistingRoom from "./ExistingRoom.vue";
 
 export default {
   computed: {
@@ -23,6 +27,7 @@ export default {
     BaseCard,
     InitialSelection,
     NewRoom,
+    ExistingRoom,
   },
 };
 </script>
