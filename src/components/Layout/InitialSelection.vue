@@ -29,6 +29,7 @@ export default {
   color: white;
   border-radius: 2rem;
   font-size: x-large;
+  overflow: hidden;
   font-family: inherit;
   -webkit-font-smoothing: antialiased;
 }
@@ -40,7 +41,7 @@ export default {
   display: flex;
   place-items: center;
   justify-content: center;
-  transition: all 1s forwards;
+  transition: background-color 0.5s ease;
 }
 
 .clr-change:hover {
