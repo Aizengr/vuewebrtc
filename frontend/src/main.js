@@ -14,11 +14,19 @@ const store = createStore({
   state() {
     return {
       optionSelected: null,
+      username: null,
+      roomID: null,
     };
   },
   getters: {
     optionSelected(state) {
       return state.optionSelected;
+    },
+    getUsername(state) {
+      return state.username;
+    },
+    getRoomID(state) {
+      return state.roomID;
     },
   },
   mutations: {
@@ -28,6 +36,13 @@ const store = createStore({
     optionReset(state) {
       state.optionSelected = null;
     },
+    setUsername(state, username) {
+      state.username = username;
+      console.log("store " + state.username);
+    },
+    setRoomID(state, roomID) {
+      state.roomID = roomID;
+    },
   },
   actions: {
     setRoomOption(context, option) {
@@ -35,6 +50,12 @@ const store = createStore({
     },
     optionReset(context) {
       context.commit("optionReset");
+    },
+    setUsername(context, username) {
+      context.commit("setUsername", username);
+    },
+    setRoomID(context, roomID) {
+      context.commit("setRoomID", roomID);
     },
   },
 });

@@ -24,22 +24,21 @@ body {
   padding: 0px !important;
   background: url(./assets/background.jpg);
   /* background: linear-gradient(180deg, #0e0d0d, #312d2f, #615c5c, #2e0412); */
-  background-size: 120% 120%;
-  animation: gradient 30s ease infinite;
+  background-size: 110% 110%;
+  animation: gradient 50s ease infinite;
   height: 100vh;
   font-weight: 400;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 @keyframes gradient {
-  0% {
-    background-position: 0% 50%;
+  0%,
+  75% {
+    background-size: 110% 110%;
   }
-  50% {
-    background-position: 100% 50%;
-  }
+  50%,
   100% {
-    background-position: 0% 50%;
+    background-size: 100% 100%;
   }
 }
 </style>

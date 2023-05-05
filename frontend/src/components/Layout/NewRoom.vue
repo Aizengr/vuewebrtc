@@ -1,12 +1,18 @@
 <template>
-  <form class="form-flex">
+  <form @submit.prevent="createRoom" class="form-flex">
     <label for="username" class="form-flex-item">Username:</label>
-    <input type="text" class="form-flex-item" />
+    <input
+      type="text"
+      id="username"
+      v-model.trim.lazy="username"
+      class="form-flex-item"
+    />
     <div class="form-flex-item button-flex">
-      <base-button button-text="Create"></base-button>
+      <base-button type="submit" button-text="Create"></base-button>
       <base-button @click="optionReset" button-text="Cancel"></base-button>
     </div>
   </form>
+  <div v-if="inputError != null" class="input-error">{{ inputError }}</div>
 </template>
 
 <script>
@@ -14,11 +20,32 @@ import BaseButton from "../UI/BaseButton.vue";
 import { mapActions } from "vuex";
 
 export default {
+  data() {
+    return {
+      username: "",
+      inputError: null,
+    };
+  },
   components: {
     BaseButton,
   },
   methods: {
     ...mapActions(["optionReset"]),
+    createRoom() {
+      if (this.validateInput()) {
+        console.log(this.username);
+        this.$store.dispatch("setUsername", this.username);
+      }
+    },
+    validateInput() {
+      const regex = /^[a-zA-Z0-9_]{4,16}$/;
+      if (this.username.length > 0 && regex.test(this.username)) {
+        this.inputError = null;
+        return true;
+      }
+      this.inputError = "Invalid username!";
+      return false;
+    },
   },
 };
 </script>
@@ -32,7 +59,7 @@ export default {
 label {
   color: white;
   font-size: large;
-  margin-bottom: -2em;
+  /* margin-bottom: -1em; */
 }
 
 input {
@@ -45,6 +72,13 @@ input {
 
 input:focus {
   background-color: var(--main-btn-hover-color);
+}
+
+.input-error {
+  padding-top: 1rem;
+  color: red;
+  text-align: center;
+  font-weight: 500;
 }
 .form-flex {
   display: flex;
@@ -59,5 +93,8 @@ input:focus {
   width: 60%;
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+  row-gap: 1rem;
 }
 </style>
