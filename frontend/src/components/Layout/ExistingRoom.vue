@@ -32,6 +32,7 @@ export default {
       username: "",
       roomID: "",
       inputError: null,
+      roomNotFound: true,
     };
   },
   components: {
