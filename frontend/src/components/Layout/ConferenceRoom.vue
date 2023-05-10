@@ -15,7 +15,7 @@
         <font-awesome-icon :icon="['fas', 'gear']" class="font-icon" />
       </div>
     </base-card>
-    <base-card class="video-area">Video Section</base-card>
+    <base-card class="video-area"><video-section></video-section></base-card>
     <base-card class="chat hidden">Chat</base-card>
   </div>
 </template>
@@ -23,11 +23,13 @@
 <script>
 import BaseCard from "../UI/BaseCard.vue";
 import BaseButton from "../UI/BaseButton.vue";
+import VideoSection from "../Layout/VideoSection.vue";
 
 export default {
   components: {
     BaseCard,
     BaseButton,
+    VideoSection,
   },
 };
 </script>
@@ -82,10 +84,14 @@ h2 {
 }
 .room-grid {
   display: grid;
-  grid-template-columns: 5fr 1fr;
+  grid-template-columns: 5fr auto;
   gap: 0.5rem;
   grid-template-areas:
     "topbar chat"
     "video chat";
+}
+
+.hidden {
+  display: none;
 }
 </style>
