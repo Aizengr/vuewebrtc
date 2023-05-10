@@ -1,7 +1,24 @@
 import { reactive } from "vue";
 import { io } from "socket.io-client";
 
-export const state = reactive({
+class SocketService {
+  socket;
+  constructor() {}
+
+  setupSocketConnection() {
+    const URL =
+      process.env.NODE_ENV === "production"
+        ? undefined
+        : "https://localhost:3000";
+    this.socket = io(URL, {
+      autoConnect: true,
+    });
+  }
+}
+
+export default new SocketService();
+
+const state = reactive({
   connected: false,
   localStream: null,
   currAudioTrack: null,
@@ -29,8 +46,7 @@ const iceServers = {
 // "undefined" means the URL will be computed from the `window.location` object
 const URL =
   process.env.NODE_ENV === "production" ? undefined : "https://localhost:3000";
-
-export const socket = io(URL, {
+const socket = io(URL, {
   autoConnect: true,
 });
 
@@ -47,11 +63,11 @@ const streamConstraints = {
 };
 ////-------------------------SIGNALING
 
-export async function createRoom(username) {
-  socket.emit("create", username);
-  state.connected = true;
-  state.username = username;
-}
+// function createRoom(username) {
+//   socket.emit("create", username);
+//   state.connected = true;
+//   state.username = username;
+// }
 
 //server emits created
 socket.on("created", (room) => {

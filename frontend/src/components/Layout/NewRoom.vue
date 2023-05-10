@@ -35,7 +35,7 @@ export default {
       if (this.validateInput()) {
         this.$store.dispatch("setUsername", this.username);
         this.$router.push({
-          name: "createRoom",
+          name: "room",
           query: {
             username: this.username,
           },
