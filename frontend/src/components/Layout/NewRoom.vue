@@ -33,8 +33,13 @@ export default {
     ...mapActions(["optionReset"]),
     createRoom() {
       if (this.validateInput()) {
-        console.log(this.username);
         this.$store.dispatch("setUsername", this.username);
+        this.$router.push({
+          name: "createRoom",
+          query: {
+            username: this.username,
+          },
+        });
       }
     },
     validateInput() {

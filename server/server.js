@@ -22,7 +22,11 @@ const httpsOptions = {
 // };
 
 let https = require('https').Server(httpsOptions, app);
-let io = require('socket.io')(https);
+let io = require('socket.io')(https, {
+    cors: {
+        origin: 'http://localhost:8080',
+    },
+});
 
 //static hosting using express
 app.use(express.static('public'));
@@ -42,7 +46,10 @@ function usernameCheck(room, username) {
 
 //signal handlers
 io.on('connection', socket => {
+    console.log('Connection');
+
     socket.on('create', username => {
+        console.log('Create');
         username = username.trim();
         let roomID = uuidv4();
         socket.join(roomID);

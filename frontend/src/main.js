@@ -48,7 +48,6 @@ const store = createStore({
     },
     setUsername(state, username) {
       state.username = username;
-      console.log("store " + state.username);
     },
     setRoomID(state, roomID) {
       state.roomID = roomID;
@@ -74,3 +73,5 @@ app.use(store);
 app.use(router);
 
 app.component("font-awesome-icon", FontAwesomeIcon).mount("#app");
+
+export default store;
