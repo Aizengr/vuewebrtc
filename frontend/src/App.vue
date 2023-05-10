@@ -1,16 +1,6 @@
 <template>
-  <the-homepage class="init-background"></the-homepage>
+  <router-view></router-view>
 </template>
-
-<script>
-import TheHomepage from "./components/Layout/TheHomepage.vue";
-export default {
-  name: "App",
-  components: {
-    TheHomepage,
-  },
-};
-</script>
 
 <style>
 :root {

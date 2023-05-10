@@ -1,13 +1,23 @@
 import { createApp } from "vue";
 import { createStore } from "vuex";
-
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
-library.add(faXmark);
+import router from "./router.js";
 
 import App from "./App.vue";
+
+/* import the fontawesome core */
+import { library } from "@fortawesome/fontawesome-svg-core";
+
+/* import font awesome icon component */
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+/* import specific icons */
+import { faDisplay } from "@fortawesome/free-solid-svg-icons";
+import { faVideoSlash } from "@fortawesome/free-solid-svg-icons";
+import { faMicrophoneSlash } from "@fortawesome/free-solid-svg-icons";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+
+/* add icons to the library */
+library.add(faDisplay, faVideoSlash, faMicrophoneSlash, faGear);
 
 const app = createApp(App);
 const store = createStore({
@@ -61,5 +71,6 @@ const store = createStore({
 });
 
 app.use(store);
+app.use(router);
 
 app.component("font-awesome-icon", FontAwesomeIcon).mount("#app");

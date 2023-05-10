@@ -1,12 +1,12 @@
 <template>
   <div class="full-page">
-    <base-card v-if="optionSelected === null" class="centered">
+    <base-card class="centered" v-if="optionSelected === null">
       <initial-selection></initial-selection>
     </base-card>
-    <base-card v-else-if="optionSelected === 'new'">
+    <base-card class="centered" v-else-if="optionSelected === 'new'">
       <new-room></new-room>
     </base-card>
-    <base-card v-else>
+    <base-card class="centered" v-else>
       <existing-room></existing-room>
     </base-card>
   </div>
@@ -44,5 +44,8 @@ export default {
 .centered {
   justify-self: center;
   place-self: center;
+  width: 20%;
+  height: 30%;
+  margin: auto;
 }
 </style>
