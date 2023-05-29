@@ -42,6 +42,9 @@ const store = createStore({
       localStream: null,
       connected: null,
       currAudioTracks: null,
+      rtcPeerConnections: new Map(),
+      remoteStreams: [],
+      roomNotFoundError: false,
     };
   },
   getters: {
@@ -62,6 +65,18 @@ const store = createStore({
     },
     getCurrentAudioTracks(state) {
       return state.currAudioTracks;
+    },
+    getRTCPeerConnections(state) {
+      return state.rtcPeerConnections;
+    },
+    getRemoteStreams(state) {
+      return state.remoteStreams;
+    },
+    hasRemoteUsername(state, remoteUsername) {
+      return state.rtcPeerConnections.has(remoteUsername);
+    },
+    getRTCPeerConnection(state, remoteUsername) {
+      return state.rtcPeerConnections.get(remoteUsername);
     },
   },
   mutations: {
@@ -86,6 +101,19 @@ const store = createStore({
     setCurrentAudioTracks(state, audioTracks) {
       state.audioTracks = audioTracks;
     },
+    addRTCPeerConnection(state, username, connection) {
+      state.rtcPeerConnections.set(username, connection);
+    },
+    addRemoteStreams(state, remoteStream) {
+      state.remoteStreams.push(remoteStream);
+    },
+    setRoomNotFoundError(state, status) {
+      state.roomNotFoundError = status;
+    },
+    closeRemoteConnection(state, username) {
+      state.rtcPeerConnections.get(username).close();
+      state.rtcPeerConnections.delete(username);
+    },
   },
   actions: {
     setRoomOption(context, option) {
@@ -108,6 +136,18 @@ const store = createStore({
     },
     setCurrentAudioTracks(context, audioTracks) {
       context.commit("setCurrentAudioTracks", audioTracks);
+    },
+    addRTCPeerConnection(context, username, connection) {
+      context.commit("addRTCPeerConnection", username, connection);
+    },
+    addRemoteStreams(context, remoteStream) {
+      context.commit("setRemoteStreams", remoteStream);
+    },
+    setRoomNotFoundError(context, status) {
+      context.commit("setRoomNotFoundError", status);
+    },
+    closeRemoteConnection(context, username) {
+      context.commit("closeRemoteConnection", username);
     },
   },
 });

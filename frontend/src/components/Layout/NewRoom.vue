@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     roomCreated() {
-      return this.$store.state.connected;
+      return this.$store.state.connected && this.$store.state.localStream;
     },
   },
   watch: {
