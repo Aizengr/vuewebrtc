@@ -2,7 +2,7 @@
   <div class="room-grid">
     <base-card class="top-bar">
       <div class="roomIDText">
-        <h2>RoomID: {{ this.$store.getRoomID }}</h2>
+        <h2>RoomID: {{ roomID }}</h2>
         <base-button class="button-small" buttonText="Copy"></base-button>
       </div>
       <div class="setting-icons">
@@ -26,14 +26,15 @@ import BaseButton from "../UI/BaseButton.vue";
 import VideoSection from "../Layout/VideoSection.vue";
 
 export default {
-  // async beforeMount() {
-  //   if (!this.$store.getRoomID) {
-  //   }
-  // },
   components: {
     BaseCard,
     BaseButton,
     VideoSection,
+  },
+  computed: {
+    roomID() {
+      return this.$store.getters.getRoomID;
+    },
   },
 };
 </script>

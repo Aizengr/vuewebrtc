@@ -19,6 +19,19 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 /* add icons to the library */
 library.add(faDisplay, faVideoSlash, faMicrophoneSlash, faGear);
 
+// state = reactive({
+//   connected: false,
+//   localStream: null,
+//   currAudioTrack: null,
+//   isScreenSharing: false,
+//   rtcPeerConnections: new Map(),
+//   roomID: null,
+//   remoteStreams: [],
+//   messages: [],
+//   roomNotFoundError: false,
+//   usernameTakenError: false,
+// });
+
 const app = createApp(App);
 const store = createStore({
   state() {
@@ -26,6 +39,9 @@ const store = createStore({
       optionSelected: null,
       username: null,
       roomID: null,
+      localStream: null,
+      connected: null,
+      currAudioTracks: null,
     };
   },
   getters: {
@@ -37,6 +53,15 @@ const store = createStore({
     },
     getRoomID(state) {
       return state.roomID;
+    },
+    getLocalStream(state) {
+      return state.localStream;
+    },
+    isConnected(state) {
+      return state.connected;
+    },
+    getCurrentAudioTracks(state) {
+      return state.currAudioTracks;
     },
   },
   mutations: {
@@ -52,6 +77,15 @@ const store = createStore({
     setRoomID(state, roomID) {
       state.roomID = roomID;
     },
+    setLocalStream(state, localstream) {
+      state.localStream = localstream;
+    },
+    setConnectedStatus(state, status) {
+      state.connected = status;
+    },
+    setCurrentAudioTracks(state, audioTracks) {
+      state.audioTracks = audioTracks;
+    },
   },
   actions: {
     setRoomOption(context, option) {
@@ -65,6 +99,15 @@ const store = createStore({
     },
     setRoomID(context, roomID) {
       context.commit("setRoomID", roomID);
+    },
+    setLocalStream(context, localstream) {
+      context.commit("setLocalStream", localstream);
+    },
+    setConnectedStatus(context, status) {
+      context.commit("setConnectedStatus", status);
+    },
+    setCurrentAudioTracks(context, audioTracks) {
+      context.commit("setCurrentAudioTracks", audioTracks);
     },
   },
 });

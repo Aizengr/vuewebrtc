@@ -1,6 +1,6 @@
 <template>
   <div class="video-section">
-    <video class="main-video"></video>
+    <video autoplay="true" class="main-video" ref="mainVideo"></video>
     <div class="video-flex">
       <video class="sec-video"></video>
       <video class="sec-video"></video>
@@ -12,7 +12,13 @@
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  mounted() {
+    this.$refs.mainVideo.srcObject = this.$store.getters.getLocalStream;
+  },
+};
+</script>
 
 <style scoped?>
 video {

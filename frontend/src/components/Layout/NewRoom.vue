@@ -18,6 +18,8 @@
 <script>
 import BaseButton from "../UI/BaseButton.vue";
 import { mapActions } from "vuex";
+// import { state } from "../../socket";
+import socketService from "../../socket";
 
 export default {
   data() {
@@ -29,17 +31,28 @@ export default {
   components: {
     BaseButton,
   },
+  computed: {
+    roomCreated() {
+      return this.$store.state.connected;
+    },
+  },
+  watch: {
+    roomCreated: {
+      handler(newValue) {
+        if (newValue) {
+          this.$router.push({
+            name: "room",
+          });
+        }
+      },
+    },
+  },
   methods: {
     ...mapActions(["optionReset"]),
     createRoom() {
       if (this.validateInput()) {
-        this.$store.dispatch("setUsername", this.username);
-        this.$router.push({
-          name: "room",
-          query: {
-            username: this.username,
-          },
-        });
+        socketService.setupSocketConnection();
+        socketService.roomConnect(this.username);
       }
     },
     validateInput() {
