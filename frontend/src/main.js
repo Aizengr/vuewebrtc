@@ -19,19 +19,6 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 /* add icons to the library */
 library.add(faDisplay, faVideoSlash, faMicrophoneSlash, faGear);
 
-// state = reactive({
-//   connected: false,
-//   localStream: null,
-//   currAudioTrack: null,
-//   isScreenSharing: false,
-//   rtcPeerConnections: new Map(),
-//   roomID: null,
-//   remoteStreams: [],
-//   messages: [],
-//   roomNotFoundError: false,
-//   usernameTakenError: false,
-// });
-
 const app = createApp(App);
 const store = createStore({
   state() {
@@ -45,6 +32,7 @@ const store = createStore({
       rtcPeerConnections: new Map(),
       remoteStreams: [],
       roomNotFoundError: false,
+      usernameTakenError: false,
     };
   },
   getters: {
@@ -114,6 +102,9 @@ const store = createStore({
       state.rtcPeerConnections.get(username).close();
       state.rtcPeerConnections.delete(username);
     },
+    setUsernameTakenError(state, status) {
+      state.usernameTakenError = status;
+    },
   },
   actions: {
     setRoomOption(context, option) {
@@ -148,6 +139,9 @@ const store = createStore({
     },
     closeRemoteConnection(context, username) {
       context.commit("closeRemoteConnection", username);
+    },
+    setUsernameTakenError(context, status) {
+      context.commit("setUsernameTakenError", status);
     },
   },
 });

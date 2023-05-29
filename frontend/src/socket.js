@@ -258,9 +258,9 @@ class SocketService {
       store.dispatch("closeRemoteConnection", remoteUsername);
     });
 
-    //   this.socket.on("usernametaken", () => {
-    //     this.state.usernameTakenError = true;
-    //   });
+    this.socket.on("usernametaken", () => {
+      store.dispatch("setUsernameTakenError", true);
+    });
   }
 
   roomConnect(username) {
