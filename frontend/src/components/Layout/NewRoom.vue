@@ -52,7 +52,7 @@ export default {
     createRoom() {
       if (this.validateInput()) {
         socketService.setupSocketConnection();
-        socketService.roomConnect(this.username);
+        socketService.createRoom(this.username);
       }
     },
     validateInput() {

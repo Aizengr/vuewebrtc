@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import { createApp } from "vue";
 import { createStore } from "vuex";
 import router from "./router.js";
+import adapter from "webrtc-adapter";
 
 import App from "./App.vue";
 
@@ -60,10 +62,12 @@ const store = createStore({
     getRemoteStreams(state) {
       return state.remoteStreams;
     },
-    hasRemoteUsername(state, remoteUsername) {
+    hasRemoteUsername: (state) => (remoteUsername) => {
       return state.rtcPeerConnections.has(remoteUsername);
     },
-    getRTCPeerConnection(state, remoteUsername) {
+    getRTCPeerConnection: (state) => (remoteUsername) => {
+      console.log(state.rtcPeerConnections);
+
       return state.rtcPeerConnections.get(remoteUsername);
     },
   },
@@ -89,17 +93,26 @@ const store = createStore({
     setCurrentAudioTracks(state, audioTracks) {
       state.audioTracks = audioTracks;
     },
-    addRTCPeerConnection(state, username, connection) {
-      state.rtcPeerConnections.set(username, connection);
+    addRTCPeerConnection(state, RTCconnectionObject) {
+      state.rtcPeerConnections.set(
+        RTCconnectionObject.username,
+        RTCconnectionObject.connection
+      );
     },
-    addRemoteStreams(state, remoteStream) {
-      state.remoteStreams.push(remoteStream);
+    updateRemoteStream(state, remoteStreamObject) {
+      const stream = state.remoteStreams.find((element) => {
+        element.username === remoteStreamObject.username;
+      });
+      if (stream) {
+        stream.stream = remoteStreamObject.stream;
+      } else {
+        state.remoteStreams.push(remoteStreamObject);
+      }
     },
     setRoomNotFoundError(state, status) {
       state.roomNotFoundError = status;
     },
     closeRemoteConnection(state, username) {
-      state.rtcPeerConnections.get(username).close();
       state.rtcPeerConnections.delete(username);
     },
     setUsernameTakenError(state, status) {
@@ -128,11 +141,11 @@ const store = createStore({
     setCurrentAudioTracks(context, audioTracks) {
       context.commit("setCurrentAudioTracks", audioTracks);
     },
-    addRTCPeerConnection(context, username, connection) {
-      context.commit("addRTCPeerConnection", username, connection);
+    addRTCPeerConnection(context, RTCconnectionObject) {
+      context.commit("addRTCPeerConnection", RTCconnectionObject);
     },
-    addRemoteStreams(context, remoteStream) {
-      context.commit("setRemoteStreams", remoteStream);
+    updateRemoteStream(context, remoteStreamObject) {
+      context.commit("updateRemoteStream", remoteStreamObject);
     },
     setRoomNotFoundError(context, status) {
       context.commit("setRoomNotFoundError", status);

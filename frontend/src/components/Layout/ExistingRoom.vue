@@ -25,6 +25,7 @@
 <script>
 import BaseButton from "../UI/BaseButton.vue";
 import { mapActions } from "vuex";
+import socketService from "./../../socket";
 
 export default {
   data() {
@@ -35,6 +36,22 @@ export default {
       roomNotFound: true,
     };
   },
+  computed: {
+    joinedRoom() {
+      return this.$store.state.connected && this.$store.state.localStream;
+    },
+  },
+  watch: {
+    joinedRoom: {
+      handler(newValue) {
+        if (newValue) {
+          this.$router.push({
+            name: "room",
+          });
+        }
+      },
+    },
+  },
   components: {
     BaseButton,
   },
@@ -42,8 +59,8 @@ export default {
     ...mapActions(["optionReset"]),
     joinRoom() {
       if (this.validateInput()) {
-        this.$store.dispatch("setUsername", this.username);
-        this.$store.dispatch("setUsername", this.roomID);
+        socketService.setupSocketConnection();
+        socketService.joinRoom(this.username, this.roomID);
       }
     },
     validateInput() {

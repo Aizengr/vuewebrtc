@@ -35,7 +35,6 @@ class SocketService {
     });
 
     this.socket.on("created", (room) => {
-      console.log(room + " CREATED RECEIVED");
       store.dispatch("setRoomID", room);
       store.dispatch("setConnectedStatus", true);
 
@@ -52,6 +51,7 @@ class SocketService {
 
     //server emits joined
     this.socket.on("joined", () => {
+      store.dispatch("setConnectedStatus", true);
       navigator.mediaDevices
         .getUserMedia(this.streamConstraints)
         .then((stream) => {
@@ -71,13 +71,13 @@ class SocketService {
     //server emits ready
     this.socket.on("ready", (remoteUsername) => {
       //if client hasnt established peer connection yet
-      if (!store.hasRemoteUsername(remoteUsername)) {
+      if (!store.getters.hasRemoteUsername(remoteUsername)) {
         //creates an RTCPeerConnectoin object
         let rtcPeerConnection = new RTCPeerConnection(this.iceServers);
 
         //adds current local stream to the object
         store.state.localStream.getTracks().forEach((track) => {
-          rtcPeerConnection.addTrack(track, store.getters.getLocalStream);
+          rtcPeerConnection.addTrack(track, store.state.localStream);
         });
 
         // //adding data channel for data exchange and chat implementation
@@ -107,7 +107,10 @@ class SocketService {
         //adding track event listener to get stream
         rtcPeerConnection.addEventListener("track", (event) => {
           const [remoteStream] = event.streams;
-          store.dispatch("addRemoteStream", remoteStream);
+          store.dispatch("updateRemoteStream", {
+            stream: remoteStream,
+            username: remoteUsername,
+          });
         });
 
         //prepares an offer and sends it
@@ -126,11 +129,12 @@ class SocketService {
           .catch((err) => {
             console.log(err);
           });
-        store.dispatch(
-          "addRTCPeerConnection",
-          remoteUsername,
-          rtcPeerConnection
-        );
+        console.log("FROM SOCKET PEER CONNECTION", rtcPeerConnection);
+
+        store.dispatch("addRTCPeerConnection", {
+          username: remoteUsername,
+          connection: rtcPeerConnection,
+        });
         // dataChannels.set(remoteUsername, newDataChannel);
       }
     });
@@ -138,13 +142,13 @@ class SocketService {
     //server emits offer
     this.socket.on("offer", (sessionDesc, remoteUsername) => {
       //if client hasnt yet established peer connection
-      if (!store.hasRemoteUsername(remoteUsername)) {
+      if (!store.getters.hasRemoteUsername(remoteUsername)) {
         //creates an RTCPeerConnectoin object
         let rtcPeerConnection = new RTCPeerConnection(this.iceServers);
 
         //adds current local stream to the object
         store.state.localStream.getTracks().forEach((track) => {
-          rtcPeerConnection.addTrack(track, this.state.localStream);
+          rtcPeerConnection.addTrack(track, store.state.localStream);
         });
 
         // //adding data channel for data exchange and chat implementation
@@ -176,7 +180,10 @@ class SocketService {
 
         rtcPeerConnection.addEventListener("track", async (event) => {
           const [remoteStream] = event.streams;
-          store.dispatch("addRemoteStream", remoteStream);
+          store.dispatch("updateRemoteStream", {
+            stream: remoteStream,
+            username: remoteUsername,
+          });
         });
 
         //stores the offer as a remote description
@@ -200,11 +207,10 @@ class SocketService {
           .catch((err) => {
             console.log("Error occured when creating answer" + err);
           });
-        store.dispatch(
-          "addRTCPeerConnection",
-          remoteUsername,
-          rtcPeerConnection
-        );
+        store.dispatch("addRTCPeerConnection", {
+          username: remoteUsername,
+          connection: rtcPeerConnection,
+        });
       }
     });
 
@@ -255,6 +261,7 @@ class SocketService {
 
     //handing peer disconnection
     this.socket.on("peerDisconnected", (remoteUsername) => {
+      store.getters.getRTCPeerConnection(remoteUsername).close();
       store.dispatch("closeRemoteConnection", remoteUsername);
     });
 
@@ -263,9 +270,15 @@ class SocketService {
     });
   }
 
-  roomConnect(username) {
+  createRoom(username) {
     this.socket.emit("create", username);
     store.dispatch("setUsername", username);
+  }
+
+  joinRoom(username, roomID) {
+    this.socket.emit("join", roomID, username);
+    store.dispatch("setUsername", username);
+    store.dispatch("setRoomID", roomID);
   }
 }
 

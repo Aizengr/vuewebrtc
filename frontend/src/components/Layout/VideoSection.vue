@@ -2,20 +2,30 @@
   <div class="video-section">
     <video autoplay="true" class="main-video" ref="mainVideo"></video>
     <div class="video-flex">
-      <video class="sec-video"></video>
-      <video class="sec-video"></video>
-      <video class="sec-video"></video>
-      <video class="sec-video"></video>
-      <video class="sec-video"></video>
-      <video class="sec-video"></video>
+      <video
+        v-for="streamObject in remoteStreams"
+        :key="streamObject.username"
+        :id="streamObject.username"
+        class="sec-video"
+        autoplay="true"
+        :srcObject="streamObject.stream"
+      ></video>
     </div>
   </div>
 </template>
 
 <script>
+// // eslint-disable-next-line no-unused-vars
+// import adapter from "webrtc-adapter";
+
 export default {
   mounted() {
     this.$refs.mainVideo.srcObject = this.$store.getters.getLocalStream;
+  },
+  computed: {
+    remoteStreams() {
+      return this.$store.state.remoteStreams;
+    },
   },
 };
 </script>
