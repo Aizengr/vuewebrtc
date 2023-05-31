@@ -12,7 +12,9 @@
       <base-button @click="optionReset" button-text="Cancel"></base-button>
     </div>
   </form>
-  <div v-if="inputError != null" class="input-error">{{ inputError }}</div>
+  <Transition name="error-fade">
+    <p v-if="inputError != null" class="input-error">{{ inputError }}</p>
+  </Transition>
 </template>
 
 <script>
@@ -97,6 +99,7 @@ input:focus {
   color: red;
   text-align: center;
   font-weight: 500;
+  transition: all 0.2s ease-in;
 }
 .form-flex {
   display: flex;
@@ -114,5 +117,14 @@ input:focus {
   flex-wrap: wrap;
   column-gap: 1rem;
   row-gap: 1rem;
+}
+
+.error-fade-enter-from {
+  opacity: 0%;
+  transform: translateY(-10px);
+}
+
+.error-leave-from {
+  display: none;
 }
 </style>

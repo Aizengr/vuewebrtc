@@ -50,9 +50,14 @@ export default {
       this.$refs.copyIDbutton.disabled = true;
       navigator.clipboard.writeText(this.roomID);
       this.buttonText = "Copied☑️";
+      this.resetCopyButton();
+    },
+    resetCopyButton() {
       setTimeout(() => {
-        this.buttonText = "Copy RoomID";
-        this.$refs.copyIDbutton.disabled = false;
+        if (this.$refs.copyIDbutton) {
+          this.buttonText = "Copy RoomID";
+          this.$refs.copyIDbutton.disabled = false;
+        }
       }, 1200);
     },
   },
