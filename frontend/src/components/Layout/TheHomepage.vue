@@ -62,8 +62,8 @@ export default {
 .centered {
   justify-self: center;
   place-self: center;
-  width: 20%;
-  height: 30%;
+  width: 330px;
+  height: 300px;
   margin: auto;
 }
 
