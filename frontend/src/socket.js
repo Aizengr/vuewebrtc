@@ -30,13 +30,22 @@ class SocketService {
       process.env.NODE_ENV === "production"
         ? undefined
         : "https://localhost:3000";
+
     this.socket = io(URL, {
       autoConnect: true,
     });
 
+    this.socket.on("connect", () => {
+      store.dispatch("setSocketConnected", true);
+    });
+
+    this.socket.on("connect_error", () => {
+      store.dispatch("setSocketConnected", false);
+    });
+
     this.socket.on("created", (room) => {
       store.dispatch("setRoomID", room);
-      store.dispatch("setConnectedStatus", true);
+      store.dispatch("setConnectedToRoomStatus", true);
 
       navigator.mediaDevices
         .getUserMedia(this.streamConstraints) //getting media devices
@@ -51,7 +60,7 @@ class SocketService {
 
     //server emits joined
     this.socket.on("joined", () => {
-      store.dispatch("setConnectedStatus", true);
+      store.dispatch("setConnectedToRoomStatus", true);
       navigator.mediaDevices
         .getUserMedia(this.streamConstraints)
         .then((stream) => {

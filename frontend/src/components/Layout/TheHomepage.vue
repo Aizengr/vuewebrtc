@@ -7,9 +7,10 @@
       <base-card class="centered" v-else-if="optionSelected === 'new'">
         <new-room></new-room>
       </base-card>
-      <base-card class="centered" v-else>
+      <base-card class="centered" v-else-if="optionSelected === 'existing'">
         <existing-room></existing-room>
       </base-card>
+      <base-card v-else class="centered"><server-down></server-down></base-card>
     </Transition>
   </div>
 </template>
@@ -20,16 +21,31 @@ import BaseCard from "../UI/BaseCard.vue";
 import InitialSelection from "./InitialSelection.vue";
 import NewRoom from "./NewRoom.vue";
 import ExistingRoom from "./ExistingRoom.vue";
+import ServerDown from "./ServerDown.vue";
 
 export default {
   computed: {
     ...mapGetters(["optionSelected"]),
+    socketConnected() {
+      return this.$store.state.socketConnected;
+    },
+  },
+  watch: {
+    socketConnected: {
+      handler(newValue) {
+        console.log(newValue);
+        if (!newValue) {
+          this.$store.dispatch("setRoomOption", "none");
+        }
+      },
+    },
   },
   components: {
     BaseCard,
     InitialSelection,
     NewRoom,
     ExistingRoom,
+    ServerDown,
   },
 };
 </script>

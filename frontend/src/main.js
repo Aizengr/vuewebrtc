@@ -28,8 +28,9 @@ const store = createStore({
       optionSelected: null,
       username: null,
       roomID: null,
+      socketConnected: null,
       localStream: null,
-      connected: null,
+      roomConnected: null,
       currAudioTracks: null,
       rtcPeerConnections: new Map(),
       remoteStreams: [],
@@ -50,8 +51,8 @@ const store = createStore({
     getLocalStream(state) {
       return state.localStream;
     },
-    isConnected(state) {
-      return state.connected;
+    isConnectedToRoom(state) {
+      return state.roomConnected;
     },
     getCurrentAudioTracks(state) {
       return state.currAudioTracks;
@@ -78,6 +79,9 @@ const store = createStore({
     optionReset(state) {
       state.optionSelected = null;
     },
+    setSocketConnected(state, status) {
+      state.socketConnected = status;
+    },
     setUsername(state, username) {
       state.username = username;
     },
@@ -87,7 +91,7 @@ const store = createStore({
     setLocalStream(state, localstream) {
       state.localStream = localstream;
     },
-    setConnectedStatus(state, status) {
+    setConnectedToRoomStatus(state, status) {
       state.connected = status;
     },
     setCurrentAudioTracks(state, audioTracks) {
@@ -136,6 +140,9 @@ const store = createStore({
     optionReset(context) {
       context.commit("optionReset");
     },
+    setSocketConnected(context, status) {
+      context.commit("setSocketConnected", status);
+    },
     setUsername(context, username) {
       context.commit("setUsername", username);
     },
@@ -145,8 +152,8 @@ const store = createStore({
     setLocalStream(context, localstream) {
       context.commit("setLocalStream", localstream);
     },
-    setConnectedStatus(context, status) {
-      context.commit("setConnectedStatus", status);
+    setConnectedToRoomStatus(context, status) {
+      context.commit("setConnectedToRoomStatus", status);
     },
     setCurrentAudioTracks(context, audioTracks) {
       context.commit("setCurrentAudioTracks", audioTracks);

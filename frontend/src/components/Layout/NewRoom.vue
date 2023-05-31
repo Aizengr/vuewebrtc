@@ -30,6 +30,7 @@ export default {
       inputError: null,
     };
   },
+  emits: ["serverDown"],
   components: {
     BaseButton,
   },
