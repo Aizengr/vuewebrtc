@@ -101,12 +101,22 @@ const store = createStore({
     },
     updateRemoteStream(state, remoteStreamObject) {
       const stream = state.remoteStreams.find((element) => {
-        element.username === remoteStreamObject.username;
+        return element.username === remoteStreamObject.username;
       });
+
       if (stream) {
         stream.stream = remoteStreamObject.stream;
       } else {
         state.remoteStreams.push(remoteStreamObject);
+      }
+    },
+    removeRemoteStream(state, username) {
+      const stream = state.remoteStreams.find((element) => {
+        return (element.username = username);
+      });
+      if (stream) {
+        const index = state.remoteStreams.indexOf(stream);
+        state.remoteStreams.splice(index, 1);
       }
     },
     setRoomNotFoundError(state, status) {
@@ -152,6 +162,7 @@ const store = createStore({
     },
     closeRemoteConnection(context, username) {
       context.commit("closeRemoteConnection", username);
+      context.commit("removeRemoteStream", username);
     },
     setUsernameTakenError(context, status) {
       context.commit("setUsernameTakenError", status);

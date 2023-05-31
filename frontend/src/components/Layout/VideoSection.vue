@@ -1,6 +1,11 @@
 <template>
   <div class="video-section">
-    <video autoplay="true" class="main-video" ref="mainVideo"></video>
+    <video
+      autoplay="true"
+      class="main-video"
+      :id="myUsername"
+      ref="mainVideo"
+    ></video>
     <div class="video-flex">
       <video
         v-for="streamObject in remoteStreams"
@@ -25,6 +30,9 @@ export default {
   computed: {
     remoteStreams() {
       return this.$store.state.remoteStreams;
+    },
+    myUsername() {
+      return this.$store.state.username;
     },
   },
 };

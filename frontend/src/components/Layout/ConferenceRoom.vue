@@ -2,8 +2,12 @@
   <div class="room-grid">
     <base-card class="top-bar">
       <div class="roomIDText">
-        <h2>RoomID: {{ roomID }}</h2>
-        <base-button class="button-small" buttonText="Copy"></base-button>
+        <base-button
+          class="button-small"
+          :buttonText="buttonText"
+          @click="copyRoomIDtoClipboard"
+          ref="copyIDbutton"
+        ></base-button>
       </div>
       <div class="setting-icons">
         <font-awesome-icon :icon="['fas', 'display']" class="font-icon" />
@@ -26,6 +30,11 @@ import BaseButton from "../UI/BaseButton.vue";
 import VideoSection from "../Layout/VideoSection.vue";
 
 export default {
+  data() {
+    return {
+      buttonText: "Copy RoomID",
+    };
+  },
   components: {
     BaseCard,
     BaseButton,
@@ -34,6 +43,17 @@ export default {
   computed: {
     roomID() {
       return this.$store.getters.getRoomID;
+    },
+  },
+  methods: {
+    copyRoomIDtoClipboard() {
+      this.$refs.copyIDbutton.disabled = true;
+      navigator.clipboard.writeText(this.roomID);
+      this.buttonText = "Copied☑️";
+      setTimeout(() => {
+        this.buttonText = "Copy RoomID";
+        this.$refs.copyIDbutton.disabled = false;
+      }, 1200);
     },
   },
 };
@@ -90,7 +110,7 @@ h2 {
 .room-grid {
   display: grid;
   grid-template-columns: 5fr auto;
-  gap: 0.5rem;
+  gap: 0.2rem;
   grid-template-areas:
     "topbar chat"
     "video chat";

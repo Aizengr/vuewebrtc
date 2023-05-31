@@ -12,10 +12,10 @@ export default {
 
 <style scoped>
 button {
+  border: 0.1px solid rgba(255, 255, 255, 0.36);
   border-radius: 2rem;
   color: #fff;
   background: none;
-  border: none;
   font-family: inherit;
   font-size: 1.2rem;
   cursor: pointer;

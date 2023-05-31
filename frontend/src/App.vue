@@ -1,5 +1,9 @@
 <template>
-  <router-view></router-view>
+  <router-view v-slot="{ Component }">
+    <transition>
+      <component :is="Component" />
+    </transition>
+  </router-view>
 </template>
 
 <style>
@@ -30,5 +34,15 @@ body {
   100% {
     background-size: 100% 100%;
   }
+}
+
+.fade-enter-from {
+  opacity: 0%;
+}
+.fade-enter-active {
+  transition: all 0.2s ease-in;
+}
+.fade-leave-from {
+  display: none;
 }
 </style>

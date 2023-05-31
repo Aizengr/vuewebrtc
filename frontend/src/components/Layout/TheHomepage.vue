@@ -1,14 +1,16 @@
 <template>
   <div class="full-page">
-    <base-card class="centered" v-if="optionSelected === null">
-      <initial-selection></initial-selection>
-    </base-card>
-    <base-card class="centered" v-else-if="optionSelected === 'new'">
-      <new-room></new-room>
-    </base-card>
-    <base-card class="centered" v-else>
-      <existing-room></existing-room>
-    </base-card>
+    <Transition name="fade">
+      <base-card class="centered" v-if="optionSelected === null">
+        <initial-selection></initial-selection>
+      </base-card>
+      <base-card class="centered" v-else-if="optionSelected === 'new'">
+        <new-room></new-room>
+      </base-card>
+      <base-card class="centered" v-else>
+        <existing-room></existing-room>
+      </base-card>
+    </Transition>
   </div>
 </template>
 
@@ -47,5 +49,16 @@ export default {
   width: 20%;
   height: 30%;
   margin: auto;
+}
+
+.fade-enter-from {
+  opacity: 0%;
+  transform: translateY(-10px);
+}
+.fade-enter-active {
+  transition: all 0.3s ease-in-out;
+}
+.fade-leave-from {
+  display: none;
 }
 </style>
