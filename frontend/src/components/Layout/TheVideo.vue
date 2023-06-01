@@ -32,12 +32,11 @@ video.main-video {
 
 p {
   position: absolute;
-  /* top: 15px; */
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
   width: 100%;
   margin: 0;
-  z-index: 10;
+  z-index: 1;
   text-align: center;
   padding: 0;
   background: rgba(201, 195, 195, 0.11);

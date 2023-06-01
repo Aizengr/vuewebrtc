@@ -16,10 +16,19 @@
           :icon="['fas', 'microphone-slash']"
           class="font-icon"
         />
-        <font-awesome-icon :icon="['fas', 'gear']" class="font-icon" />
+        <font-awesome-icon
+          :icon="['fas', 'gear']"
+          class="font-icon"
+          @click="toggleSettings"
+        />
       </div>
     </base-card>
-    <base-card class="video-area"><video-section></video-section></base-card>
+    <base-card class="video-area">
+      <Transition name="settings">
+        <the-settings v-if="settingsOpen"></the-settings>
+      </Transition>
+      <video-section></video-section
+    ></base-card>
     <base-card class="chat hidden">Chat</base-card>
   </div>
 </template>
@@ -28,17 +37,20 @@
 import BaseCard from "../UI/BaseCard.vue";
 import BaseButton from "../UI/BaseButton.vue";
 import VideoSection from "../Layout/VideoSection.vue";
+import TheSettings from "./TheSettings.vue";
 
 export default {
   data() {
     return {
       buttonText: "Copy RoomID",
+      settingsOpen: false,
     };
   },
   components: {
     BaseCard,
     BaseButton,
     VideoSection,
+    TheSettings,
   },
   computed: {
     roomID() {
@@ -59,6 +71,9 @@ export default {
           this.$refs.copyIDbutton.disabled = false;
         }
       }, 1200);
+    },
+    toggleSettings() {
+      this.settingsOpen = this.settingsOpen ? false : true;
     },
   },
 };
@@ -107,6 +122,7 @@ h2 {
 
 .video-area {
   grid-area: video;
+  overflow: hidden;
 }
 
 .chat {
@@ -121,6 +137,21 @@ h2 {
     "video chat";
 }
 
+.settings-enter-from {
+  opacity: 0%;
+  transform: translateY(-100%);
+}
+.settings-enter-active {
+  transition: all 0.2s ease-in-out;
+}
+
+.settings-leave-active {
+  transition: all 0.2s ease-in-out;
+}
+.settings-leave-to {
+  opacity: 0%;
+  transform: translateY(-100%);
+}
 .hidden {
   display: none;
 }
