@@ -67,8 +67,6 @@ const store = createStore({
       return state.rtcPeerConnections.has(remoteUsername);
     },
     getRTCPeerConnection: (state) => (remoteUsername) => {
-      console.log(state.rtcPeerConnections);
-
       return state.rtcPeerConnections.get(remoteUsername);
     },
   },
@@ -115,13 +113,11 @@ const store = createStore({
       }
     },
     removeRemoteStream(state, username) {
-      const stream = state.remoteStreams.find((element) => {
-        return (element.username = username);
+      state.remoteStreams.filter((element, index, arr) => {
+        if (element.username === username) {
+          arr.splice(index, 1);
+        }
       });
-      if (stream) {
-        const index = state.remoteStreams.indexOf(stream);
-        state.remoteStreams.splice(index, 1);
-      }
     },
     setRoomNotFoundError(state, status) {
       state.roomNotFoundError = status;

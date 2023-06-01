@@ -1,13 +1,14 @@
 <template>
   <div class="room-grid">
     <base-card class="top-bar">
-      <div class="roomIDText">
+      <div class="roomButtons">
         <base-button
           class="button-small"
           :buttonText="buttonText"
           @click="copyRoomIDtoClipboard"
           ref="copyIDbutton"
         ></base-button>
+        <base-button buttonText="Disconnect" @click="disconnect"></base-button>
       </div>
       <div class="setting-icons">
         <font-awesome-icon :icon="['fas', 'display']" class="font-icon" />
@@ -75,6 +76,9 @@ export default {
     toggleSettings() {
       this.settingsOpen = this.settingsOpen ? false : true;
     },
+    disconnect() {
+      location.reload("/");
+    },
   },
 };
 </script>
@@ -94,12 +98,6 @@ h2 {
   display: flex;
   justify-content: space-between;
   place-items: center;
-}
-
-.roomIDText {
-  display: flex;
-  margin-left: 1rem;
-  justify-content: center;
 }
 
 .button-small {

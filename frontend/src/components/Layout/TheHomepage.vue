@@ -33,7 +33,6 @@ export default {
   watch: {
     socketConnected: {
       handler(newValue) {
-        console.log(newValue);
         if (!newValue) {
           this.$store.dispatch("setRoomOption", "none");
         }
