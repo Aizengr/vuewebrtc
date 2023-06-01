@@ -144,7 +144,6 @@ class SocketService {
           username: remoteUsername,
           connection: rtcPeerConnection,
         });
-        store.dispatch("setCanConnect", true);
         // dataChannels.set(remoteUsername, newDataChannel);
       }
     });
@@ -221,7 +220,6 @@ class SocketService {
           username: remoteUsername,
           connection: rtcPeerConnection,
         });
-        store.dispatch("setCanConnect", true);
       }
     });
 

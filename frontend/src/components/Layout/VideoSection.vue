@@ -1,33 +1,36 @@
 <template>
   <div class="video-section">
-    <video
-      autoplay="true"
-      class="main-video"
-      :id="myUsername"
-      ref="mainVideo"
-    ></video>
+    <div class="top-padding">
+      <the-video
+        :videoClass="'main-video'"
+        :username="myUsername"
+        ref="mainVideo"
+        :stream="localStream"
+      ></the-video>
+    </div>
     <div class="video-flex">
-      <video
+      <the-video
         v-for="streamObject in remoteStreams"
         :key="streamObject.username"
-        :id="streamObject.username"
-        class="sec-video"
-        autoplay="true"
-        :srcObject="streamObject.stream"
-      ></video>
+        :videoClass="'sec-video'"
+        :stream="streamObject.stream"
+        :username="streamObject.username"
+      ></the-video>
     </div>
   </div>
 </template>
 
 <script>
-// // eslint-disable-next-line no-unused-vars
-// import adapter from "webrtc-adapter";
+import TheVideo from "./TheVideo.vue";
 
 export default {
-  mounted() {
-    this.$refs.mainVideo.srcObject = this.$store.getters.getLocalStream;
+  components: {
+    TheVideo,
   },
   computed: {
+    localStream() {
+      return this.$store.state.localStream;
+    },
     remoteStreams() {
       return this.$store.state.remoteStreams;
     },
@@ -39,11 +42,6 @@ export default {
 </script>
 
 <style scoped?>
-video {
-  border: 1px solid red;
-  border-radius: 0.5rem;
-}
-
 .video-section {
   overflow: hidden;
 }
@@ -55,15 +53,7 @@ video {
   padding: 1rem;
 }
 
-video.main-video {
-  display: flex;
-  width: 768px;
-  height: 432px;
-  margin: 1rem auto 1rem auto;
-}
-
-video.sec-video {
-  width: 384px;
-  height: 216px;
+.top-padding {
+  padding-top: 1rem;
 }
 </style>
