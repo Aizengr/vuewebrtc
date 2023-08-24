@@ -36,6 +36,9 @@ const store = createStore({
       remoteStreams: [],
       roomNotFoundError: false,
       usernameTakenError: false,
+      activeInputDevice: null,
+      activeVideoDevice: null,
+      activeOutputDevice: null,
     };
   },
   getters: {
@@ -68,6 +71,15 @@ const store = createStore({
     },
     getRTCPeerConnection: (state) => (remoteUsername) => {
       return state.rtcPeerConnections.get(remoteUsername);
+    },
+    getActiveInputDevice: (state) => {
+      return state.activeInputDevice;
+    },
+    getActiveVideoDevice: (state) => {
+      return state.activeVideoDevice;
+    },
+    getActiveOutputDevice: (state) => {
+      return state.activeOutputDevice;
     },
   },
   mutations: {
@@ -128,6 +140,31 @@ const store = createStore({
     setUsernameTakenError(state, status) {
       state.usernameTakenError = status;
     },
+    setActiveInputDevice(state, inputDevice) {
+      state.activeInputDevice = inputDevice;
+    },
+    setActiveVideoDevice(state, videoDevice) {
+      state.activeVideoDevice = videoDevice;
+    },
+    setActiveOutputDevice(state, outputDevice) {
+      state.activeOutputDevice = outputDevice;
+    },
+    updateStreamOnDeviceChange(state, stream) {
+      state.localStream = stream;
+      const [videoTrack] = stream.getVideoTracks();
+      const [audioTrack] = stream.getAudioTracks();
+
+      state.rtcPeerConnections.forEach((pc) => {
+        const senderV = pc
+          .getSenders()
+          .find((s) => s.track.kind === videoTrack.kind);
+        senderV.replaceTrack(videoTrack);
+        const senderA = pc
+          .getSenders()
+          .find((s) => s.track.kind === audioTrack.kind);
+        senderA.replaceTrack(audioTrack);
+      });
+    },
   },
   actions: {
     setRoomOption(context, option) {
@@ -169,6 +206,18 @@ const store = createStore({
     },
     setUsernameTakenError(context, status) {
       context.commit("setUsernameTakenError", status);
+    },
+    setActiveInputDevice(context, inputDevice) {
+      context.commit("setActiveInputDevice", inputDevice);
+    },
+    setActiveVideoDevice(context, videoDevice) {
+      context.commit("setActiveVideoDevice", videoDevice);
+    },
+    setActiveOutputDevice(context, outputDevice) {
+      context.commit("setActiveOutputDevice", outputDevice);
+    },
+    updateStreamOnDeviceChange(context, stream) {
+      context.commit("updateStreamOnDeviceChange", stream);
     },
   },
 });

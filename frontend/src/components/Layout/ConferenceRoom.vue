@@ -26,7 +26,10 @@
     </base-card>
     <base-card class="video-area">
       <Transition name="settings">
-        <the-settings v-if="settingsOpen"></the-settings>
+        <the-settings
+          @closeSettings="closeSettingsEmit"
+          v-if="settingsOpen"
+        ></the-settings>
       </Transition>
       <video-section></video-section
     ></base-card>
@@ -75,6 +78,9 @@ export default {
     },
     toggleSettings() {
       this.settingsOpen = this.settingsOpen ? false : true;
+    },
+    closeSettingsEmit() {
+      this.settingsOpen = false;
     },
     disconnect() {
       location.reload("/");
