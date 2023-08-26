@@ -2,27 +2,17 @@
   <div class="wrap">
     <base-card class="settings">
       <div class="settings-flex">
-        <div class="select-cam">
-          <span>Video source device: </span>
-          <select
-            v-model="selectedVideo"
-            title="cameras"
-            name="cameras"
-            class="btn cameras"
-          >
+        <div class="selection">
+          <span>Video-source device: </span>
+          <select v-model="selectedVideo" title="cameras" name="cameras">
             <option v-for="item in availableVideoDevices" :key="item.deviceId">
               {{ item.label }}
             </option>
           </select>
         </div>
-        <div class="select-mic">
+        <div class="selection">
           <span>Audio-input device: </span>
-          <select
-            v-model="selectedInput"
-            name="mics"
-            title="mics"
-            class="btn mics"
-          >
+          <select v-model="selectedInput" name="mics" title="mics">
             <option
               v-for="item in availableInputDevices"
               :value="item.label"
@@ -32,14 +22,9 @@
             </option>
           </select>
         </div>
-        <div class="select-speakers">
+        <div class="selection">
           <span>Audio-output device: </span>
-          <select
-            v-model="selectedOutput"
-            name="speakers"
-            title="speakers"
-            class="btn speakers"
-          >
+          <select v-model="selectedOutput" name="speakers" title="speakers">
             <option
               selected
               v-for="item in availableOutputDevices"
@@ -49,7 +34,7 @@
             </option>
           </select>
         </div>
-        <div>
+        <div class="button-area">
           <base-button
             type="button"
             buttonText="Apply"
@@ -109,12 +94,28 @@ export default {
         .enumerateDevices()
         .then((devices) => {
           devices.forEach((device) => {
-            console.log(device);
             if (device.kind === "audioinput") {
+              if (this.activeInputDevice) {
+                this.selectedInput = this.activeInputDevice.label;
+              } else if (!this.selectedInput) {
+                this.selectedInput = device.label;
+              }
               this.availableInputDevices.push(device);
             } else if (device.kind === "videoinput") {
+              if (this.activeVideoDevice) {
+                this.selectedVideo = this.activeVideoDevice.label;
+              } else if (!this.selectedInput) {
+                this.selectedVideo = device.label;
+              }
               this.availableVideoDevices.push(device);
-            } else this.availableOutputDevices.push(device);
+            } else {
+              if (this.activeOutputDevice) {
+                this.selectedOutput = this.activeOutputDevice.label;
+              } else if (!this.selectedInput) {
+                this.selectedOutput = device.label;
+              }
+              this.availableOutputDevices.push(device);
+            }
           });
         })
         .catch((err) => console.log(err));
@@ -159,6 +160,7 @@ export default {
           console.log("An error occured when accessing media devices " + err);
         });
     },
+    // findActiveDevice(type) {},
     saveSettings() {
       this.applySettings();
       this.$emit("closeSettings");
@@ -190,13 +192,48 @@ export default {
 .settings-flex {
   height: 100%;
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-option {
-  max-width: 30%;
+.selection {
+  width: 80%;
+}
+
+select {
+  max-width: 80%;
+  border: 0.1px solid rgba(255, 255, 255, 0.36);
+  border-radius: 2rem;
+  color: #fff;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+  font-weight: 400;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  background-color: #161616;
+  padding: 0.2rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 5rem 35rem rgba(0, 0, 0, 0.1);
+}
+
+select:active {
+  transform: translateY(5%);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+}
+
+select:focus {
+  outline: none;
+}
+
+select:hover {
+  background-color: var(--main-btn-hover-color);
+}
+
+.button-area {
+  display: flex;
+  gap: 1rem;
 }
 </style>
