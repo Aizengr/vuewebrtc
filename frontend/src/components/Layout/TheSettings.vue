@@ -104,14 +104,14 @@ export default {
             } else if (device.kind === "videoinput") {
               if (this.activeVideoDevice) {
                 this.selectedVideo = this.activeVideoDevice.label;
-              } else if (!this.selectedInput) {
+              } else if (!this.selectedVideo) {
                 this.selectedVideo = device.label;
               }
               this.availableVideoDevices.push(device);
             } else {
               if (this.activeOutputDevice) {
                 this.selectedOutput = this.activeOutputDevice.label;
-              } else if (!this.selectedInput) {
+              } else if (!this.selectedOutput) {
                 this.selectedOutput = device.label;
               }
               this.availableOutputDevices.push(device);

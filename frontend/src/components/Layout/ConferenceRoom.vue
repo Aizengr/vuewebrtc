@@ -11,11 +11,20 @@
         <base-button buttonText="Disconnect" @click="disconnect"></base-button>
       </div>
       <div class="setting-icons">
-        <font-awesome-icon :icon="['fas', 'display']" class="font-icon" />
-        <font-awesome-icon :icon="['fas', 'video-slash']" class="font-icon" />
+        <font-awesome-icon
+          :icon="['fas', 'display']"
+          class="font-icon"
+          @click="shareScreen"
+        />
+        <font-awesome-icon
+          :icon="['fas', 'video-slash']"
+          class="font-icon"
+          @click="muteVideo"
+        />
         <font-awesome-icon
           :icon="['fas', 'microphone-slash']"
           class="font-icon"
+          @click="muteAudio"
         />
         <font-awesome-icon
           :icon="['fas', 'gear']"
@@ -82,6 +91,9 @@ export default {
     closeSettingsEmit() {
       this.settingsOpen = false;
     },
+    shareScreen() {},
+    muteVideo() {},
+    muteAudio() {},
     disconnect() {
       location.reload("/");
     },

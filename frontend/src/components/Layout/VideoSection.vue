@@ -2,6 +2,7 @@
   <div class="video-section">
     <div class="top-padding">
       <the-video
+        muted
         :videoClass="'main-video'"
         :username="myUsername"
         ref="mainVideo"
