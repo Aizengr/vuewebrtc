@@ -39,6 +39,9 @@ const store = createStore({
       activeInputDevice: null,
       activeVideoDevice: null,
       activeOutputDevice: null,
+      isLocalStreamVideoEnabled: true,
+      isLocalStreamAudioEnabled: true,
+      isShareScreenEnabled: false,
     };
   },
   getters: {
@@ -100,6 +103,14 @@ const store = createStore({
     },
     setLocalStream(state, localstream) {
       state.localStream = localstream;
+    },
+    setLocalStreamAudio(state, value) {
+      state.localStream.getAudioTracks()[0].enabled = value;
+      state.isLocalStreamAudioEnabled = value;
+    },
+    setLocalStreamVideo(state, value) {
+      state.localStream.getVideoTracks()[0].enabled = value;
+      state.isLocalStreamVideoEnabled = value;
     },
     setConnectedToRoomStatus(state, status) {
       state.connected = status;
@@ -190,6 +201,12 @@ const store = createStore({
     },
     setCurrentAudioTracks(context, audioTracks) {
       context.commit("setCurrentAudioTracks", audioTracks);
+    },
+    setLocalStreamAudio(context, value) {
+      context.commit("setLocalStreamAudio", value);
+    },
+    setLocalStreamVideo(context, value) {
+      context.commit("setLocalStreamVideo", value);
     },
     addRTCPeerConnection(context, RTCconnectionObject) {
       context.commit("addRTCPeerConnection", RTCconnectionObject);

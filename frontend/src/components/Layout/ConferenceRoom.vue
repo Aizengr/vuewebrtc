@@ -13,22 +13,22 @@
       <div class="setting-icons">
         <font-awesome-icon
           :icon="['fas', 'display']"
-          class="font-icon"
+          ref="shareScreen"
           @click="shareScreen"
         />
         <font-awesome-icon
           :icon="['fas', 'video-slash']"
-          class="font-icon"
-          @click="muteVideo"
+          ref="videoMute"
+          @click="toggleVideoMute"
         />
         <font-awesome-icon
           :icon="['fas', 'microphone-slash']"
-          class="font-icon"
-          @click="muteAudio"
+          ref="micMute"
+          @click="toggleAudioMute"
         />
         <font-awesome-icon
           :icon="['fas', 'gear']"
-          class="font-icon"
+          ref="settings"
           @click="toggleSettings"
         />
       </div>
@@ -57,6 +57,9 @@ export default {
     return {
       buttonText: "Copy RoomID",
       settingsOpen: false,
+      screenShare: false,
+      audioMuted: false,
+      videoMuted: false,
     };
   },
   components: {
@@ -68,6 +71,27 @@ export default {
   computed: {
     roomID() {
       return this.$store.getters.getRoomID;
+    },
+    localStream() {
+      return this.$store.getters.getLocalStream;
+    },
+    isLocalStreamAudioEnabled() {
+      return this.$store.state.isLocalStreamAudioEnabled;
+    },
+    isLocalStreamVideoEnabled() {
+      return this.$store.state.isLocalStreamVideoEnabled;
+    },
+    shareScreenButton() {
+      return this.$refs.shareScreen.$el;
+    },
+    muteAudioButton() {
+      return this.$refs.micMute.$el;
+    },
+    muteVideoButton() {
+      return this.$refs.videoMute.$el;
+    },
+    settingsButton() {
+      return this.$refs.settings.$el;
     },
   },
   methods: {
@@ -87,13 +111,24 @@ export default {
     },
     toggleSettings() {
       this.settingsOpen = this.settingsOpen ? false : true;
+      this.settingsButton.classList.toggle("font-icon-active");
     },
     closeSettingsEmit() {
       this.settingsOpen = false;
     },
     shareScreen() {},
-    muteVideo() {},
-    muteAudio() {},
+    toggleVideoMute() {
+      this.isLocalStreamVideoEnabled
+        ? this.$store.dispatch("setLocalStreamVideo", false)
+        : this.$store.dispatch("setLocalStreamVideo", true);
+      this.muteVideoButton.classList.toggle("font-icon-active");
+    },
+    toggleAudioMute() {
+      this.isLocalStreamAudioEnabled
+        ? this.$store.dispatch("setLocalStreamAudio", false)
+        : this.$store.dispatch("setLocalStreamAudio", true);
+      this.muteAudioButton.classList.toggle("font-icon-active");
+    },
     disconnect() {
       location.reload("/");
     },
@@ -124,14 +159,13 @@ h2 {
 }
 
 .setting-icons {
-  color: white;
   font-size: 1.8rem;
   display: flex;
   gap: 1rem;
   margin-right: 1rem;
 }
 
-.font-icon:hover {
+.font-icon-active {
   color: var(--main-btn-hover-color);
   cursor: pointer;
 }
