@@ -31,7 +31,7 @@ const store = createStore({
       socketConnected: null,
       localStream: null,
       roomConnected: null,
-      currAudioTracks: null,
+      currentAudioTracks: null,
       rtcPeerConnections: new Map(),
       remoteStreams: [],
       roomNotFoundError: false,
@@ -42,6 +42,7 @@ const store = createStore({
       isLocalStreamVideoEnabled: true,
       isLocalStreamAudioEnabled: true,
       isShareScreenEnabled: false,
+      previousStream: null,
     };
   },
   getters: {
@@ -61,7 +62,7 @@ const store = createStore({
       return state.roomConnected;
     },
     getCurrentAudioTracks(state) {
-      return state.currAudioTracks;
+      return state.currentAudioTracks;
     },
     getRTCPeerConnections(state) {
       return state.rtcPeerConnections;
@@ -128,7 +129,6 @@ const store = createStore({
       const stream = state.remoteStreams.find((element) => {
         return element.username === remoteStreamObject.username;
       });
-
       if (stream) {
         stream.stream = remoteStreamObject.stream;
       } else {
@@ -165,6 +165,38 @@ const store = createStore({
       const [videoTrack] = stream.getVideoTracks();
       const [audioTrack] = stream.getAudioTracks();
 
+      state.rtcPeerConnections.forEach((pc) => {
+        const senderV = pc
+          .getSenders()
+          .find((s) => s.track.kind === videoTrack.kind);
+        senderV.replaceTrack(videoTrack);
+        const senderA = pc
+          .getSenders()
+          .find((s) => s.track.kind === audioTrack.kind);
+        senderA.replaceTrack(audioTrack);
+      });
+    },
+    updateStreamOnScreenShare(state, stream) {
+      state.previousStream = state.localStream;
+      let [screen] = stream.getVideoTracks();
+      [state.currentAudioTracks] = state.localStream.getAudioTracks();
+      stream.addTrack(state.currentAudioTracks);
+      state.localStream = stream;
+
+      state.rtcPeerConnections.forEach((pc) => {
+        const senderV = pc
+          .getSenders()
+          .find((s) => s.track.kind === screen.kind);
+        senderV.replaceTrack(screen);
+      });
+      state.isShareScreenEnabled = true;
+    },
+    resetStreamAfterShareScreen(state) {
+      state.localStream = state.previousStream;
+      const [videoTrack] = state.localStream.getVideoTracks();
+      const [audioTrack] = state.localStream.getAudioTracks();
+
+      //sending audio and video tracks to every rtc connection
       state.rtcPeerConnections.forEach((pc) => {
         const senderV = pc
           .getSenders()
@@ -235,6 +267,12 @@ const store = createStore({
     },
     updateStreamOnDeviceChange(context, stream) {
       context.commit("updateStreamOnDeviceChange", stream);
+    },
+    updateStreamOnScreenShare(context, stream) {
+      context.commit("updateStreamOnScreenShare", stream);
+    },
+    resetStreamAfterShareScreen(context) {
+      context.commit("resetStreamAfterShareScreen");
     },
   },
 });

@@ -81,6 +81,9 @@ export default {
     isLocalStreamVideoEnabled() {
       return this.$store.state.isLocalStreamVideoEnabled;
     },
+    isScreenSharing() {
+      return this.$store.state.isShareScreenEnabled;
+    },
     shareScreenButton() {
       return this.$refs.shareScreen.$el;
     },
@@ -116,7 +119,28 @@ export default {
     closeSettingsEmit() {
       this.settingsOpen = false;
     },
-    shareScreen() {},
+    shareScreen() {
+      if (!this.isScreenSharing) {
+        const sharescreenConstraints = {
+          video: {
+            cursor: "always",
+          },
+          audio: false,
+        };
+
+        navigator.mediaDevices
+          .getDisplayMedia(sharescreenConstraints)
+          .then((stream) => {
+            this.$store.dispatch("updateStreamOnScreenShare", stream);
+          })
+          .catch((err) => {
+            console.log("An error occured when accessing media devices " + err);
+          });
+      } else {
+        this.$store.dispatch("resetStreamAfterShareScreen");
+      }
+      this.shareScreenButton.classList.toggle("font-icon-active");
+    },
     toggleVideoMute() {
       this.isLocalStreamVideoEnabled
         ? this.$store.dispatch("setLocalStreamVideo", false)
@@ -159,6 +183,7 @@ h2 {
 }
 
 .setting-icons {
+  cursor: pointer;
   font-size: 1.8rem;
   display: flex;
   gap: 1rem;
