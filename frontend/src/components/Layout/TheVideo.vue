@@ -1,13 +1,37 @@
 <template>
   <div :class="videoClass">
+    <div class="videoSettings">
+      <div class="settingsIcons">
+        <font-awesome-icon
+          @click="setVideoToFullScreen"
+          :icon="['fas', 'expand']"
+        />
+      </div>
+    </div>
     <p>{{ username }}</p>
-    <video autoplay="true" :class="videoClass" :srcObject="stream"></video>
+    <video
+      autoplay="true"
+      :class="videoClass"
+      ref="currentVideo"
+      :srcObject="stream"
+    ></video>
   </div>
 </template>
 
 <script>
 export default {
   props: ["username", "stream", "videoClass"],
+  methods: {
+    setVideoToFullScreen() {
+      this.$refs.currentVideo
+        .requestFullscreen({ navigationUI: "show" })
+        .catch((err) => {
+          alert(
+            `An error occurred while trying to switch into fullscreen mode: ${err.message} (${err.name})`
+          );
+        });
+    },
+  },
 };
 </script>
 
@@ -43,6 +67,38 @@ p {
   box-shadow: 0 0px 50px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5.4px);
   -webkit-backdrop-filter: blur(5.4px);
+}
+
+.videoSettings {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: end;
+  left: -0.2rem;
+  top: 0.05rem;
+  opacity: 0;
+  transition: opacity ease-in 0.5s;
+}
+
+.videoSettings:hover {
+  opacity: 100;
+}
+
+.settingsIcons {
+  cursor: pointer;
+  transition: font-size 0.1s;
+}
+
+.settingsIcons:hover {
+  font-size: 1.5rem;
+}
+
+.videoSettings {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
 }
 
 video {

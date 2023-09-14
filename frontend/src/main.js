@@ -2,7 +2,6 @@
 import { createApp } from "vue";
 import { createStore } from "vuex";
 import router from "./router.js";
-import adapter from "webrtc-adapter";
 
 import App from "./App.vue";
 
@@ -17,9 +16,10 @@ import { faDisplay } from "@fortawesome/free-solid-svg-icons";
 import { faVideoSlash } from "@fortawesome/free-solid-svg-icons";
 import { faMicrophoneSlash } from "@fortawesome/free-solid-svg-icons";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faExpand } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
-library.add(faDisplay, faVideoSlash, faMicrophoneSlash, faGear);
+library.add(faDisplay, faVideoSlash, faMicrophoneSlash, faGear, faExpand);
 
 const app = createApp(App);
 const store = createStore({
@@ -207,6 +207,7 @@ const store = createStore({
           .find((s) => s.track.kind === audioTrack.kind);
         senderA.replaceTrack(audioTrack);
       });
+      state.isShareScreenEnabled = false;
     },
   },
   actions: {
