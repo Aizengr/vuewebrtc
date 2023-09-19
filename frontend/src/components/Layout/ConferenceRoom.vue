@@ -217,11 +217,11 @@ h2 {
   transform: translateY(-100%);
 }
 .settings-enter-active {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 
 .settings-leave-active {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 .settings-leave-to {
   opacity: 0%;

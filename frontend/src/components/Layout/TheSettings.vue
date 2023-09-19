@@ -173,7 +173,7 @@ export default {
 .wrap {
   position: absolute;
   display: flex;
-  z-index: 2;
+  z-index: 10;
   padding: 0;
   width: 100%;
   height: 100%;

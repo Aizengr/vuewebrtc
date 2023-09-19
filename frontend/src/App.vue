@@ -16,24 +16,18 @@ html,
 body {
   margin: 0px !important;
   padding: 0px !important;
-  background: url(./assets/background.jpg);
-  /* background: linear-gradient(180deg, #0e0d0d, #312d2f, #615c5c, #2e0412); */
-  background-size: 110% 110%;
-  animation: gradient 50s ease infinite;
   height: 100vh;
+  background: linear-gradient(
+    180deg,
+    #181818,
+    #131313,
+    #000000,
+    rgb(22, 2, 9),
+    rgb(41, 4, 17)
+  );
+  animation: gradient 15s ease infinite;
   font-weight: 400;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-@keyframes gradient {
-  0%,
-  75% {
-    background-size: 110% 110%;
-  }
-  50%,
-  100% {
-    background-size: 100% 100%;
-  }
 }
 
 .fade-enter-from {

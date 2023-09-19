@@ -1,4 +1,4 @@
 #!/bin/bash
-sh back.sh & sh front.sh
+cd server/ && nodemon server.js & cd ../frontend/ && npm run serve
 
 wait

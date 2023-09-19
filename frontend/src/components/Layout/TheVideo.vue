@@ -3,12 +3,14 @@
     <div class="videoSettings">
       <div class="settingsIcons">
         <font-awesome-icon
+          @mouseover="changeUsernameSize"
+          @mouseleave="resetUsernameSize"
           @click="setVideoToFullScreen"
           :icon="['fas', 'expand']"
         />
       </div>
     </div>
-    <p>{{ username }}</p>
+    <p ref="videoUsername">{{ username }}</p>
     <video
       autoplay="true"
       :class="videoClass"
@@ -30,6 +32,12 @@ export default {
             `An error occurred while trying to switch into fullscreen mode: ${err.message} (${err.name})`
           );
         });
+    },
+    changeUsernameSize() {
+      this.$refs.videoUsername.classList.add("username-size-increase");
+    },
+    resetUsernameSize() {
+      this.$refs.videoUsername.classList.remove("username-size-increase");
     },
   },
 };
@@ -67,6 +75,11 @@ p {
   box-shadow: 0 0px 50px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5.4px);
   -webkit-backdrop-filter: blur(5.4px);
+  transition: font-size ease-in 0.1s;
+}
+
+.username-size-increase {
+  font-size: 1.5rem;
 }
 
 .videoSettings {
@@ -78,7 +91,7 @@ p {
   left: -0.2rem;
   top: 0.05rem;
   opacity: 0;
-  transition: opacity ease-in 0.5s;
+  transition: opacity ease-in 0.2s;
 }
 
 .videoSettings:hover {
