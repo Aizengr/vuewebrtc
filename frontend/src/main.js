@@ -12,14 +12,24 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 /* import specific icons */
-import { faDisplay } from "@fortawesome/free-solid-svg-icons";
-import { faVideoSlash } from "@fortawesome/free-solid-svg-icons";
-import { faMicrophoneSlash } from "@fortawesome/free-solid-svg-icons";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
-import { faExpand } from "@fortawesome/free-solid-svg-icons";
+import {
+  faDisplay,
+  faVideoSlash,
+  faMicrophoneSlash,
+  faGear,
+  faExpand,
+  faMessage,
+} from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
-library.add(faDisplay, faVideoSlash, faMicrophoneSlash, faGear, faExpand);
+library.add(
+  faDisplay,
+  faVideoSlash,
+  faMicrophoneSlash,
+  faGear,
+  faExpand,
+  faMessage
+);
 
 const app = createApp(App);
 const store = createStore({

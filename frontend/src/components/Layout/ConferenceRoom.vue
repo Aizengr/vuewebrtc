@@ -12,6 +12,12 @@
       </div>
       <div class="setting-icons">
         <font-awesome-icon
+          @click="toggleChat"
+          class="centered"
+          ref="chatButton"
+          :icon="['fas', 'message']"
+        />
+        <font-awesome-icon
           :icon="['fas', 'display']"
           ref="shareScreen"
           @click="shareScreen"
@@ -42,7 +48,9 @@
       </Transition>
       <video-section></video-section
     ></base-card>
-    <base-card class="chat hidden">Chat</base-card>
+    <base-card v-if="chatOnScreen" class="chat"
+      ><the-chat></the-chat>
+    </base-card>
   </div>
 </template>
 
@@ -51,6 +59,7 @@ import BaseCard from "../UI/BaseCard.vue";
 import BaseButton from "../UI/BaseButton.vue";
 import VideoSection from "../Layout/VideoSection.vue";
 import TheSettings from "./TheSettings.vue";
+import TheChat from "./TheChat.vue";
 
 export default {
   data() {
@@ -60,6 +69,7 @@ export default {
       screenShare: false,
       audioMuted: false,
       videoMuted: false,
+      chatOnScreen: false,
     };
   },
   components: {
@@ -67,6 +77,7 @@ export default {
     BaseButton,
     VideoSection,
     TheSettings,
+    TheChat,
   },
   computed: {
     roomID() {
@@ -118,6 +129,10 @@ export default {
     },
     closeSettingsEmit() {
       this.settingsOpen = false;
+    },
+    toggleChat() {
+      this.chatOnScreen = !this.chatOnScreen;
+      this.$refs.chatButton.$el.classList.toggle("font-icon-active");
     },
     shareScreen() {
       if (!this.isScreenSharing) {
@@ -202,13 +217,17 @@ h2 {
 
 .chat {
   grid-area: chat;
+  width: 12vw;
 }
 .room-grid {
   display: grid;
+  height: 99vh;
+  padding: 0.2rem;
   grid-template-columns: 5fr auto;
+  grid-template-rows: 7% 93%;
   gap: 0.2rem;
   grid-template-areas:
-    "topbar chat"
+    "topbar topbar"
     "video chat";
 }
 

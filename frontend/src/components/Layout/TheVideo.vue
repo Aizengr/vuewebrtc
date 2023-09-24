@@ -26,7 +26,7 @@ export default {
   methods: {
     setVideoToFullScreen() {
       this.$refs.currentVideo
-        .requestFullscreen({ navigationUI: "show" })
+        .requestFullscreen({ navigationUI: "hide" })
         .catch((err) => {
           alert(
             `An error occurred while trying to switch into fullscreen mode: ${err.message} (${err.name})`
